@@ -30,7 +30,7 @@ window.onload = function(){
       var found = JSON.parse(localStorage.getItem('selectedCountry')) || "";
 
       name.innerText = found.name;
-      popn.innerText = "Population: " + found.population;
+      popn.innerText = "Population: " + Number(found.population).toLocaleString();;
       capital.innerText = "Capital: " + found.capital;
 
       select.oninput = function () {
@@ -39,8 +39,15 @@ window.onload = function(){
         console.log(found.capital);
 
         name.innerText = found.name;
-        popn.innerText = "Population: " + found.population;
+        popn.innerText = "Population: " + Number(found.population).toLocaleString();
         capital.innerText = "Capital: " + found.capital;
+
+
+        // loop around bordering countries(found.borders[i])
+        // set up dynamic html for display (add another p)
+        // loop around the countryList selecting where found.borders[i](array).value === countryList[i].alpha3Code
+        // populate display vars with the found country data
+
 
         localStorage.setItem('selectedCountry', JSON.stringify(found));
       }
