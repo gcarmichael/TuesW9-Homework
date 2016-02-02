@@ -6,13 +6,11 @@ window.onload = function(){
   request.open("GET", url);
 
   request.onload = function () {
+
     if(request.status === 200){
       console.log("got the data");
       var countryList = JSON.parse(request.responseText);
-      console.log(countryList[0]);
-      console.log(countryList[0].name + ", " + countryList[0].capital);
-      console.log(countryList[countryList.length - 1]);
-      console.log(countryList[countryList.length - 1].name + ", " + countryList[countryList.length - 1].capital);
+
       for (var i = 0; i < countryList.length; i++) {
         var select = document.getElementById("select");
         var option = document.createElement("option");
@@ -20,7 +18,33 @@ window.onload = function(){
         option.value = countryList[i].name;
         select.appendChild(option);
       };
-    }
+
+      var display = document.getElementById("display");
+      var name = document.createElement("h1");
+      var popn = document.createElement("p");
+      var capital = document.createElement("p");
+      display.appendChild(name);
+      display.appendChild(popn);
+      display.appendChild(capital);
+
+      var found = JSON.parse(localStorage.getItem('selectedCountry')) || "";
+
+      name.innerText = found.name;
+      popn.innerText = "Population: " + found.population;
+      capital.innerText = "Capital: " + found.capital;
+
+      select.oninput = function () {
+        var selectedName = document.getElementById("select").value;
+        var found = _.find(countryList, function(o) { return o.name === selectedName; });
+        console.log(found.capital);
+
+        name.innerText = found.name;
+        popn.innerText = "Population: " + found.population;
+        capital.innerText = "Capital: " + found.capital;
+
+        localStorage.setItem('selectedCountry', JSON.stringify(found));
+      }
+    } 
   }
 
   request.send(null);
