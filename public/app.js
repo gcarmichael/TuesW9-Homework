@@ -31,32 +31,7 @@ window.onload = function(){
 
       var found = JSON.parse(localStorage.getItem('selectedCountry')) || "";
 
-      name.innerText = found.name;
-      popn.innerText = "Population: " + Number(found.population).toLocaleString();
-      capital.innerText = "Capital: " + found.capital;
-
-      // var center = {lat: 40.712784, lng: -74.005941};
-      var foundLat = found.latlng[0];
-      var foundLng = found.latlng[1];
-      var center = {lat: foundLat, lng: foundLng};
-      var zoom = 4;
-      var map = new Map(center, zoom);
-
-      var content = "hi";
-      // ("<h1>" + found.name + "</h1>
-      // <br>
-      // <p>Population: " + Number(found.population).toLocaleString(); + "
-      // <br>
-      // Capital: " + found.capital + "</p>");
-      // Need to fix.
-      
-      map.addInfoWindow(center, content);
-
-      select.oninput = function () {
-        var selectedName = document.getElementById("select").value;
-        var found = _.find(countryList, function(o) { return o.name === selectedName; });
-        console.log(found.capital);
-
+      var foundDisplay = function(found){
         name.innerText = found.name;
         popn.innerText = "Population: " + Number(found.population).toLocaleString();
         capital.innerText = "Capital: " + found.capital;
@@ -69,6 +44,16 @@ window.onload = function(){
 
         var content = "<b>" + found.name + "</b><br>Population: " + Number(found.population).toLocaleString() + "<br>Capital: " + found.capital;
         map.addInfoWindow(center, content);
+      }
+
+      foundDisplay(found);
+
+      select.oninput = function () {
+        var selectedName = document.getElementById("select").value;
+        var found = _.find(countryList, function(o) { return o.name === selectedName; });
+        console.log(found.capital);
+
+        foundDisplay(found);
 
           console.log(found.borders);
 
