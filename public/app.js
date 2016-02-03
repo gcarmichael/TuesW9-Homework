@@ -23,15 +23,34 @@ window.onload = function(){
       var name = document.createElement("h1");
       var popn = document.createElement("p");
       var capital = document.createElement("p");
+      var borders = document.createElement("p");
       display.appendChild(name);
       display.appendChild(popn);
       display.appendChild(capital);
+      display.appendChild(borders);
 
       var found = JSON.parse(localStorage.getItem('selectedCountry')) || "";
 
       name.innerText = found.name;
-      popn.innerText = "Population: " + Number(found.population).toLocaleString();;
+      popn.innerText = "Population: " + Number(found.population).toLocaleString();
       capital.innerText = "Capital: " + found.capital;
+
+      // var center = {lat: 40.712784, lng: -74.005941};
+      var foundLat = found.latlng[0];
+      var foundLng = found.latlng[1];
+      var center = {lat: foundLat, lng: foundLng};
+      var zoom = 4;
+      var map = new Map(center, zoom);
+
+      var content = "hi";
+      // ("<h1>" + found.name + "</h1>
+      // <br>
+      // <p>Population: " + Number(found.population).toLocaleString(); + "
+      // <br>
+      // Capital: " + found.capital + "</p>");
+      // Need to fix.
+      
+      map.addInfoWindow(center, content);
 
       select.oninput = function () {
         var selectedName = document.getElementById("select").value;
@@ -42,12 +61,29 @@ window.onload = function(){
         popn.innerText = "Population: " + Number(found.population).toLocaleString();
         capital.innerText = "Capital: " + found.capital;
 
+        var foundLat = found.latlng[0];
+        var foundLng = found.latlng[1];
+        var center = {lat: foundLat, lng: foundLng};
+        var zoom = 4;
+        var map = new Map(center, zoom);
 
-        // loop around bordering countries(found.borders[i])
-        // set up dynamic html for display (add another p)
-        // loop around the countryList selecting where found.borders[i](array).value === countryList[i].alpha3Code
-        // populate display vars with the found country data
+        var content = "<b>" + found.name + "</b><br>Population: " + Number(found.population).toLocaleString() + "<br>Capital: " + found.capital;
+        map.addInfoWindow(center, content);
 
+          console.log(found.borders);
+
+        // if(found.borders == false){
+        //     display stuff = none or blank;
+        // }
+        var foundBorders = found.borders
+        for (border of foundBorders){
+          for (country of countryList){
+            if(country.alpha3code === border){
+              borders.innerText = country.name;
+            }
+          }
+          console.log(borders);
+        }
 
         localStorage.setItem('selectedCountry', JSON.stringify(found));
       }
@@ -55,5 +91,7 @@ window.onload = function(){
   }
 
   request.send(null);
+
+
 
 };
